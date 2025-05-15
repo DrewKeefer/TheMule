@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bewkqgq0hwlb7"]
+
+[ext_resource type="Shader" uid="uid://cunhyt531wo2a" path="res://materials/sandbox_orange.gdshader" id="1_6a0xl"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_6a0xl")
+shader_parameter/base_color = Color(1, 0.35, 0, 1)
+shader_parameter/grid_color = Color(1, 1, 1, 1)
+shader_parameter/grid_size = 1.0
+shader_parameter/line_width = 0.01
+shader_parameter/smoothing_distance = 0.005

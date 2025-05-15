@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://cgkain1klu0wg"]
+
+[ext_resource type="Material" uid="uid://dsqcwdi5h8k07" path="res://materials/sandbox_blue.tres" id="1_301do"]
+[ext_resource type="Material" uid="uid://bewkqgq0hwlb7" path="res://materials/sandbox_orange.tres" id="1_wbf35"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rhq0a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5m5pe"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_301do"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rhq0a"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_5m5pe"]
+radius = 0.1
+height = 0.2
+
+[node name="Pendulum" type="Node3D"]
+
+[node name="Anchor" type="CharacterBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Anchor"]
+mesh = SubResource("BoxMesh_rhq0a")
+skeleton = NodePath("../CollisionShape3D")
+surface_material_override/0 = ExtResource("1_wbf35")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Anchor"]
+shape = SubResource("BoxShape3D_5m5pe")
+
+[node name="Generic6DOFJoint3D" type="Generic6DOFJoint3D" parent="Anchor"]
+node_a = NodePath("..")
+node_b = NodePath("../../Bob")
+angular_limit_x/enabled = false
+angular_limit_y/enabled = false
+angular_limit_z/enabled = false
+angular_spring_x/enabled = true
+angular_spring_x/stiffness = 50.0
+angular_spring_x/damping = 10.0
+angular_spring_z/enabled = true
+angular_spring_z/stiffness = 50.0
+angular_spring_z/damping = 10.0
+
+[node name="Bob" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42068, 0)
+mass = 10.0
+can_sleep = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bob"]
+mesh = SubResource("SphereMesh_301do")
+skeleton = NodePath("../CollisionShape3D")
+surface_material_override/0 = ExtResource("1_301do")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bob"]
+shape = SubResource("SphereShape3D_rhq0a")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="ForceTracker" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.30758, 0)
+mesh = SubResource("SphereMesh_5m5pe")
+surface_material_override/0 = ExtResource("1_wbf35")

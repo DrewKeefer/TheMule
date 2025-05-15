@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbmxhiwmp3b0m"]
+
+[ext_resource type="Script" uid="uid://cs7ah2uv45r07" path="res://scripts/player.gd" id="1_3vyb7"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vyb7"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3vyb7"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_u8vuu"]
+size = Vector3(0.75, 1, 0.174)
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera_pitch", "camera_yaw")]
+script = ExtResource("1_3vyb7")
+SPEED = 3.0
+camera_pitch = NodePath("CameraYaw/CameraPitch")
+camera_yaw = NodePath("CameraYaw")
+
+[node name="BodyCollision" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3vyb7")
+
+[node name="PlayerModel" type="MeshInstance3D" parent="BodyCollision"]
+mesh = SubResource("CapsuleMesh_3vyb7")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BodyCollision/PlayerModel"]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0, 0.442166, -0.5)
+mesh = SubResource("PrismMesh_u8vuu")
+
+[node name="CameraYaw" type="Node3D" parent="."]
+
+[node name="CameraPitch" type="Node3D" parent="CameraYaw"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.75, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraYaw/CameraPitch"]
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraYaw/CameraPitch/SpringArm3D"]

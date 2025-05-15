@@ -1,0 +1,115 @@
+[gd_scene load_steps=15 format=3 uid="uid://cy5ytlhoekcf4"]
+
+[ext_resource type="Material" uid="uid://bewkqgq0hwlb7" path="res://materials/sandbox_orange.tres" id="1_axt10"]
+[ext_resource type="Material" uid="uid://dsqcwdi5h8k07" path="res://materials/sandbox_blue.tres" id="1_cy2bk"]
+[ext_resource type="Script" uid="uid://dc2ha2dsebk2h" path="res://scripts/quatlab.gd" id="3_0ayjy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0ayjy"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_5eiam"]
+sky_material = SubResource("ProceduralSkyMaterial_0ayjy")
+
+[sub_resource type="Environment" id="Environment_6cgff"]
+background_mode = 2
+sky = SubResource("Sky_5eiam")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_cy2bk"]
+material = ExtResource("1_cy2bk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ayjy"]
+albedo_color = Color(0.960784, 0.2, 0.321569, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_axt10"]
+material = SubResource("StandardMaterial3D_0ayjy")
+size = Vector3(1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_axt10"]
+albedo_color = Color(0.529412, 0.839216, 0.0117647, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0ayjy"]
+material = SubResource("StandardMaterial3D_axt10")
+size = Vector3(0.1, 1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5eiam"]
+albedo_color = Color(0.160784, 0.54902, 0.960784, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5eiam"]
+material = SubResource("StandardMaterial3D_5eiam")
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cgff"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0)
+
+[node name="QuatLab" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6cgff")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Base" type="MeshInstance3D" parent="."]
+material_override = ExtResource("1_axt10")
+mesh = SubResource("BoxMesh_cy2bk")
+
+[node name="X" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = SubResource("BoxMesh_axt10")
+
+[node name="Y" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_0ayjy")
+
+[node name="Z" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+mesh = SubResource("BoxMesh_5eiam")
+
+[node name="Copy" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = SubResource("BoxMesh_cy2bk")
+script = ExtResource("3_0ayjy")
+lerpSpeed = 5.0
+
+[node name="X" type="MeshInstance3D" parent="Copy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = SubResource("BoxMesh_axt10")
+
+[node name="Y" type="MeshInstance3D" parent="Copy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_0ayjy")
+
+[node name="Z" type="MeshInstance3D" parent="Copy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+mesh = SubResource("BoxMesh_5eiam")
+
+[node name="Normal" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("BoxMesh_cy2bk")
+surface_material_override/0 = SubResource("StandardMaterial3D_6cgff")
+
+[node name="X" type="MeshInstance3D" parent="Normal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = SubResource("BoxMesh_axt10")
+
+[node name="Y" type="MeshInstance3D" parent="Normal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_0ayjy")
+
+[node name="Z" type="MeshInstance3D" parent="Normal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+mesh = SubResource("BoxMesh_5eiam")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="Copy" method="_on_timer_timeout"]

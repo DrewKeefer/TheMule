@@ -1,0 +1,100 @@
+[gd_scene load_steps=8 format=3 uid="uid://ddfqdwxrwsyc2"]
+
+[ext_resource type="Material" uid="uid://bewkqgq0hwlb7" path="res://materials/sandbox_orange.tres" id="1_2gju5"]
+[ext_resource type="Material" uid="uid://dsqcwdi5h8k07" path="res://materials/sandbox_blue.tres" id="1_n77mx"]
+[ext_resource type="PackedScene" uid="uid://bbmxhiwmp3b0m" path="res://scenes/player.tscn" id="3_n77mx"]
+[ext_resource type="PackedScene" uid="uid://cwdwhgu3xrp27" path="res://scenes/pack.tscn" id="4_nb1wl"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2gju5"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_rlkm5"]
+sky_material = SubResource("ProceduralSkyMaterial_2gju5")
+
+[sub_resource type="Environment" id="Environment_n77mx"]
+background_mode = 2
+sky = SubResource("Sky_rlkm5")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_n77mx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(100, 1, 100)
+material = ExtResource("1_n77mx")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.6, -4)
+size = Vector3(1, 0.2, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.7, -5)
+size = Vector3(1, 0.2, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.9, -5)
+size = Vector3(1, 0.2, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.1, -6)
+size = Vector3(1, 0.2, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0, 0, 1, 7.5, 0.8, 0)
+size = Vector3(10, 1, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(0.446729, -0.894669, 0, 0.894669, 0.446729, 0, 0, 0, 1, 12.0069, 1.63773, 0)
+size = Vector3(10, 1, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(0.0174524, -0.999848, 0, 0.999848, 0.0174524, 0, 0, 0, 1, 14.2302, 5.59035, 0)
+size = Vector3(10, 1, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1, -7)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.3, -8)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.3, -8)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.5, -9)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.05, -10)
+size = Vector3(1, 0.9, 1)
+material = ExtResource("1_2gju5")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.05, -10)
+size = Vector3(1, 0.9, 1)
+material = ExtResource("1_2gju5")
+
+[node name="Player" parent="." node_paths=PackedStringArray("pack_node") instance=ExtResource("3_n77mx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+pack_node = NodePath("../Pack")
+
+[node name="Pack" parent="." instance=ExtResource("4_nb1wl")]

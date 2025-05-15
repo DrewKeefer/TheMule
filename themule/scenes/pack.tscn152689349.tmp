@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwdwhgu3xrp27"]
+
+[ext_resource type="Script" uid="uid://3iie1qsmq6lb" path="res://scripts/pack.gd" id="1_cfbes"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cfbes"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ktcod"]
+
+[node name="Pack" type="Node2D" node_paths=PackedStringArray("ball_node", "beam_node", "beam_polygon")]
+script = ExtResource("1_cfbes")
+ball_node = NodePath("Objects/Ball")
+beam_node = NodePath("Objects/Beam")
+beam_polygon = NodePath("Objects/Beam/CollisionPolygon2D")
+return_force = 1.0
+
+[node name="Objects" type="Node2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="Pin" type="PinJoint2D" parent="Objects"]
+node_a = NodePath("../Pivot")
+node_b = NodePath("../Beam")
+
+[node name="Pivot" type="StaticBody2D" parent="Objects"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Pivot"]
+shape = SubResource("CircleShape2D_cfbes")
+
+[node name="Ball" type="RigidBody2D" parent="Objects"]
+position = Vector2(-176, -304)
+mass = 0.05
+gravity_scale = 0.5
+sleeping = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Ball"]
+shape = SubResource("CircleShape2D_ktcod")
+
+[node name="Beam" type="RigidBody2D" parent="Objects"]
+mass = 0.1
+can_sleep = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Objects/Beam"]
