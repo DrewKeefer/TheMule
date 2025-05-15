@@ -87,7 +87,7 @@ func rotate_with_beam() -> void:
 	#
 	#var current_y = body_collision.basis.y.normalized()
 	#var target_normal = beam_basis.y.normalized()
-	#printt(current_normal, current_y)
+
 	#
 	## lerp the normal
 	#var blend = 1 - pow(0.5, delta * 5)

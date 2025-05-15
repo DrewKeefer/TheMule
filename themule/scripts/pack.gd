@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 			beam_node.angular_velocity = 0.0
 
 func apply_player_motion(turn_speed) -> void:
-	print(turn_speed)
+
 	beam_node.apply_torque(turn_speed * 500)
 
 func create_beam(radius : float, segments : int) -> void:
