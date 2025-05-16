@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 # Scene objects
 @onready var body_collision: CollisionShape3D = $BodyCollision
+@onready var character_model: Node3D = $CharacterModel
+@onready var character_skeleton: Skeleton3D = $CharacterModel/YARROW_rigged/CharacterArmature_001/Skeleton3D
 @export var pack_node : Node2D
 
 # Player settings
@@ -11,11 +13,17 @@ extends CharacterBody3D
 @export var JUMP_HEIGHT : float = 2.0
 @export var MOTION_INTERPOLATE_SPEED : float = 10.0
 @export var ROTATION_INTERPOLATE_SPEED : float = 10.0
+@export var BEAM_INFLUENCE : float = 0.5
 
 # Player motion variables
 var orientation = Transform3D()
 var motion : Vector2 = Vector2()
 var previous_yaw : float = 0
+
+# Animation settins
+enum ANIMATIONS {IDLE, WALK, RUN}
+@onready var animation_tree: AnimationTree = $AnimationTree
+@export var current_animation := ANIMATIONS.IDLE
 
 # Camera settings
 @export_category("Camera Settings")
@@ -58,20 +66,40 @@ func _process(delta: float) -> void:
 	
 	# Rotate player model along y axis
 	var q_to = Quaternion(orientation.basis)
-	var q_from = Quaternion(body_collision.basis)
+	var q_from = Quaternion(character_model.basis)
 	var slerped_q = q_from.slerp(q_to, delta * ROTATION_INTERPOLATE_SPEED)
 
-	body_collision.basis = Basis(slerped_q)
+	character_model.basis = Basis(slerped_q)
 	
 	# Pass rotation speed into the pack node
-	var current_yaw = body_collision.rotation.y
+	var current_yaw = character_model.rotation.y
 	var delta_yaw = wrapf(current_yaw - previous_yaw, -PI, PI)
 	var angular_velocity_y = delta_yaw / delta
 	pack_node.apply_player_motion(-angular_velocity_y)
 	previous_yaw = current_yaw
 	
-	# Rotate player along Z axis based on pack beam rotation
-	body_collision.rotate_object_local(Vector3.FORWARD, pack_node.beam_rotation * -.07)
+	# Animate
+	animate(ANIMATIONS.WALK, delta)
+	
+	# Rotate player torso along Z axis based on pack beam rotation
+	character_skeleton.reset_bone_pose(5)
+	var tilted_transform = character_skeleton.get_bone_global_pose(5)
+	tilted_transform = tilted_transform.rotated_local(Vector3.FORWARD, pack_node.beam_rotation)
+	character_skeleton.set_bone_global_pose_override(5, tilted_transform, 1.0)
+	
+	# Rotate arms to side if leaning too much (Upper arm indices 11 and 15)
+	var rotate_weight = abs(pack_node.beam_rotation) - .25
+	character_skeleton.reset_bone_pose(11)
+	character_skeleton.reset_bone_pose(15)
+	var l_transform = character_skeleton.get_bone_global_pose(11)
+	var r_transform = character_skeleton.get_bone_global_pose(15)
+	l_transform = l_transform.rotated_local(Vector3.RIGHT, .25)
+	r_transform = r_transform.rotated_local(Vector3.RIGHT, .25)
+	character_skeleton.set_bone_global_pose_override(11, l_transform, rotate_weight)
+	character_skeleton.set_bone_global_pose_override(15, r_transform, rotate_weight)
+	
+	# For rotating whole character_model
+	#character_model.rotate_object_local(Vector3.FORWARD, pack_node.beam_rotation * -.07)
 
 func _physics_process(delta: float) -> void:
 	apply_basic_input(delta)
@@ -80,7 +108,18 @@ func _physics_process(delta: float) -> void:
 func apply_basic_input(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	motion = motion.lerp(input_dir, MOTION_INTERPOLATE_SPEED * delta)
+	
+	# Modify input_dir by beam_rotation
+	var beam_rotation : float = -pack_node.beam_rotation
+	if input_dir.y != 0.0:
+		input_dir.x += beam_rotation * BEAM_INFLUENCE
+		
+	# Slow down faster than we start
+	var acc_speed : float = MOTION_INTERPOLATE_SPEED
+	if !input_dir.length():
+		acc_speed = MOTION_INTERPOLATE_SPEED * 2
+	
+	motion = motion.lerp(input_dir.normalized(), acc_speed * delta)
 	
 	# Get camera direction
 	var camera_basis : Basis = camera_yaw.global_transform.basis
@@ -101,6 +140,10 @@ func apply_basic_input(delta: float) -> void:
 	velocity.x = direction.x * SPEED
 	velocity.z = direction.z * SPEED
 	
+	# Apply beam influence
+	if abs(beam_rotation) >= PI / 4:
+		velocity += orientation.basis.x * beam_rotation
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -120,3 +163,7 @@ func camera_rotation(delta) -> void:
 
 	camera_yaw.rotate_object_local(Vector3.UP, yaw_current)
 	camera_pitch.rotate_object_local(Vector3.RIGHT, pitch_current)
+
+func animate(anim: int, delta := 0.0):
+	current_animation = anim
+	animation_tree["parameters/walk/blend_position"] = velocity.length()

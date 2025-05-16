@@ -2,26 +2,37 @@
 
 [ext_resource type="Script" uid="uid://3iie1qsmq6lb" path="res://scripts/pack.gd" id="1_cfbes"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cfbes"]
+size = Vector2(4, 4)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_cfbes"]
 radius = 5.0
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x28f8"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ktcod"]
-radius = 8.0
-
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cfbes"]
-rough = true
+friction = 0.15
 
-[node name="Pack" type="Node2D" node_paths=PackedStringArray("ball_node", "beam_node", "beam_polygon")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x28f8"]
+size = Vector2(20, 96)
+
+[node name="Pack" type="Node2D" node_paths=PackedStringArray("beam_node", "beam_shape")]
 script = ExtResource("1_cfbes")
-ball_node = NodePath("Objects/Ball")
 beam_node = NodePath("Objects/Beam")
-beam_polygon = NodePath("Objects/Beam/CollisionPolygon2D")
-return_force = 1.0
+beam_shape = NodePath("Objects/Beam/BeamShape")
+return_force = 2.0
+turn_force = 0.5
 
 [node name="Objects" type="Node2D" parent="."]
 position = Vector2(640, 384)
+
+[node name="RotClamp" type="StaticBody2D" parent="Objects"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/RotClamp"]
+position = Vector2(40, 0)
+shape = SubResource("RectangleShape2D_cfbes")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Objects/RotClamp"]
+position = Vector2(-40, 0)
+shape = SubResource("RectangleShape2D_cfbes")
 
 [node name="Pin" type="PinJoint2D" parent="Objects"]
 node_a = NodePath("../Pivot")
@@ -35,18 +46,9 @@ collision_mask = 0
 visible = false
 shape = SubResource("CircleShape2D_cfbes")
 
-[node name="Ball" type="RigidBody2D" parent="Objects"]
-position = Vector2(0, -64)
-mass = 0.01
-physics_material_override = SubResource("PhysicsMaterial_x28f8")
-can_sleep = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Ball"]
-shape = SubResource("CircleShape2D_ktcod")
-
 [node name="Beam" type="RigidBody2D" parent="Objects"]
 physics_material_override = SubResource("PhysicsMaterial_cfbes")
 can_sleep = false
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Objects/Beam"]
-polygon = PackedVector2Array(128, 8, -128, 8, -128, -16, -75, -6, -50, -6, -25, -3, 0, -2, 25, -3, 50, -6, 75, -6, 128, -16)
+[node name="BeamShape" type="CollisionShape2D" parent="Objects/Beam"]
+shape = SubResource("RectangleShape2D_x28f8")

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="TheMuleGit"
+config/name="TheMule"
 run/main_scene="uid://ddfqdwxrwsyc2"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+
+[global_group]
+
+pack_group=""
+ui_group=""
 
 [input]
 

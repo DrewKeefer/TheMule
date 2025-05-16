@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bbmxhiwmp3b0m"]
+[gd_scene load_steps=13 format=3 uid="uid://bbmxhiwmp3b0m"]
 
 [ext_resource type="Script" uid="uid://cs7ah2uv45r07" path="res://scripts/player.gd" id="1_3vyb7"]
 [ext_resource type="PackedScene" uid="uid://bcwma1kct0mbr" path="res://blender/YARROW_rigged.blend" id="2_g2els"]
@@ -32,20 +32,12 @@ nodes/walk/node = SubResource("AnimationNodeBlendSpace1D_qlg0r")
 nodes/walk/position = Vector2(-120, 220)
 node_connections = [&"output", 0, &"walk"]
 
-[sub_resource type="Curve" id="Curve_qhqgy"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.239544, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_dqkch"]
-curve = SubResource("Curve_qhqgy")
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qhqgy"]
-inherit_velocity_ratio = 1.0
-initial_velocity_min = 1.0
-initial_velocity_max = 1.5
-scale_min = 0.5
-scale_max = 1.5
-scale_curve = SubResource("CurveTexture_dqkch")
+direction = Vector3(1, 0.5, 0)
+spread = 0.0
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, -2, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlg0r"]
 albedo_color = Color(0.176419, 0.176419, 0.176419, 1)
@@ -55,7 +47,7 @@ material = SubResource("StandardMaterial3D_qlg0r")
 radius = 0.01
 height = 0.02
 radial_segments = 8
-rings = 4
+rings = 2
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera_pitch", "camera_yaw")]
 script = ExtResource("1_3vyb7")
@@ -64,7 +56,6 @@ camera_pitch = NodePath("CameraYaw/CameraPitch")
 camera_yaw = NodePath("CameraYaw")
 
 [node name="BodyCollision" type="CollisionShape3D" parent="."]
-visible = false
 shape = SubResource("CapsuleShape3D_3vyb7")
 
 [node name="CameraYaw" type="Node3D" parent="."]
@@ -85,33 +76,33 @@ spring_length = 1.5
 transform = Transform3D(-0.295, 0, -2.57897e-08, 0, 0.295, 0, 2.57897e-08, 0, -0.295, 0, 0, -0.0665118)
 
 [node name="Skeleton3D" parent="CharacterModel/YARROW_rigged/CharacterArmature_001" index="0"]
-bones/1/position = Vector3(0.329607, 0.0246963, -0.0454716)
-bones/1/rotation = Quaternion(5.20035e-06, 0.705429, 0.708781, 5.43529e-06)
-bones/2/position = Vector3(0.0021778, 1.26937, 0.0268429)
-bones/2/rotation = Quaternion(-0.000196007, 0.00102948, 9.38792e-06, 0.999999)
+bones/1/position = Vector3(0.329607, 0.0246628, -0.0450554)
+bones/1/rotation = Quaternion(5.19815e-06, 0.705735, 0.708476, 5.43761e-06)
+bones/2/position = Vector3(0.00345859, 1.23313, 0.103612)
+bones/2/rotation = Quaternion(-0.00050704, 0.00266428, 2.43296e-05, 0.999996)
 bones/4/rotation = Quaternion(0.107662, 4.35629e-07, 6.64429e-08, 0.994188)
-bones/5/rotation = Quaternion(-0.0387395, -8.36088e-05, 5.88462e-05, 0.999249)
-bones/6/rotation = Quaternion(-0.0274103, 9.36417e-06, 4.57446e-05, 0.999624)
+bones/5/rotation = Quaternion(-0.0387427, -8.31826e-07, -8.67544e-09, 0.999249)
+bones/6/rotation = Quaternion(-0.0100111, 2.09265e-05, 0.000139032, 0.99995)
 bones/7/rotation = Quaternion(0.260658, -0.000265952, -7.16101e-05, 0.965431)
-bones/10/position = Vector3(0.119043, 0.098724, -0.033225)
-bones/11/rotation = Quaternion(-0.455861, -0.2315, -0.784616, 0.350678)
-bones/12/rotation = Quaternion(-0.00977133, 0.238557, -0.182609, 0.953755)
-bones/13/rotation = Quaternion(0.00639571, 0.0182162, 0.0388298, 0.999059)
-bones/14/position = Vector3(-0.118855, 0.0988487, -0.0332229)
-bones/15/rotation = Quaternion(-0.455633, 0.231004, 0.784759, 0.350982)
-bones/16/rotation = Quaternion(-0.00966722, -0.238401, 0.182447, 0.953826)
-bones/17/rotation = Quaternion(-0.000887, -0.154384, -0.0345698, 0.987406)
-bones/18/position = Vector3(0.214659, -0.0136595, 0.0128892)
-bones/18/rotation = Quaternion(0.995436, 0.0413006, 0.0114814, 0.0852626)
-bones/19/rotation = Quaternion(0.185067, 0.00656695, -0.00350076, 0.982698)
-bones/20/position = Vector3(-0.216341, -0.013645, 0.0129001)
-bones/20/rotation = Quaternion(0.995358, -0.0413814, -0.0109479, 0.086196)
-bones/21/rotation = Quaternion(0.185264, -0.00656626, 0.00350212, 0.982661)
-bones/23/position = Vector3(-0.326984, 0.0247949, -0.0443475)
-bones/23/rotation = Quaternion(-5.5109e-06, 0.705852, 0.708359, -5.10202e-06)
+bones/10/position = Vector3(0.118656, 0.0986825, -0.0332532)
+bones/11/rotation = Quaternion(-0.456041, -0.231275, -0.784496, 0.350863)
+bones/12/rotation = Quaternion(-0.00988502, 0.238685, -0.182405, 0.953761)
+bones/13/rotation = Quaternion(-0.000746753, 0.151839, 0.03466, 0.987797)
+bones/14/position = Vector3(-0.128405, 0.0998715, -0.0324556)
+bones/15/rotation = Quaternion(-0.456041, 0.231275, 0.784496, 0.350863)
+bones/16/rotation = Quaternion(-0.00988499, -0.238685, 0.182405, 0.953761)
+bones/17/rotation = Quaternion(-0.000882921, -0.154362, -0.0345743, 0.987409)
+bones/18/position = Vector3(0.214658, -0.0136424, 0.0129005)
+bones/18/rotation = Quaternion(0.992422, 0.0402775, 0.0147072, 0.115153)
+bones/19/rotation = Quaternion(0.283509, 0.0061792, -0.004147, 0.958941)
+bones/20/position = Vector3(-0.216341, -0.0136424, 0.0129002)
+bones/20/rotation = Quaternion(0.992649, -0.042377, -0.00834965, 0.11306)
+bones/21/rotation = Quaternion(0.282018, -0.00618565, 0.00413742, 0.95938)
+bones/23/position = Vector3(-0.326984, 0.0246629, -0.0450557)
+bones/23/rotation = Quaternion(-5.51177e-06, 0.705735, 0.708476, -5.10109e-06)
 
 [node name="GourdAtt" type="BoneAttachment3D" parent="CharacterModel/YARROW_rigged/CharacterArmature_001/Skeleton3D" index="0"]
-transform = Transform3D(0.835243, -0.372622, 0.0128187, 0.368205, 0.819422, -0.172093, 0.0586233, 0.162307, 0.898256, 0.0053105, 1.75101, -0.731006)
+transform = Transform3D(0.914682, -4.65661e-10, 2.32831e-10, 9.31323e-10, 0.891838, -0.203146, 2.32831e-10, 0.203146, 0.891838, 0.00456676, 1.7356, -0.661257)
 bone_name = "gourd"
 bone_idx = 8
 
@@ -119,10 +110,10 @@ bone_idx = 8
 transform = Transform3D(1, 5.32907e-15, 5.68434e-14, 0, 0.999999, 8.9407e-08, 0, -8.9407e-08, 0.999999, 0.414347, 0.91338, -0.00938421)
 
 [node name="gourd" parent="CharacterModel/YARROW_rigged/CharacterArmature_001/Skeleton3D" index="1"]
-transform = Transform3D(0.835243, -0.372622, 0.0128187, 0.368205, 0.819422, -0.172093, 0.0586233, 0.162307, 0.898256, 0.0053105, 1.75101, -0.731006)
+transform = Transform3D(0.914682, -4.65661e-10, 2.32831e-10, 9.31323e-10, 0.891838, -0.203146, 2.32831e-10, 0.203146, 0.891838, 0.00456676, 1.7356, -0.661257)
 
 [node name="hat" parent="CharacterModel/YARROW_rigged/CharacterArmature_001/Skeleton3D" index="2"]
-transform = Transform3D(0.384556, -0.0265875, 7.12043e-09, 0.000581858, 0.00847408, -0.0165593, -0.0264859, -0.385845, -0.000363685, -0.0169598, 2.48768, 0.0927132)
+transform = Transform3D(0.384462, -0.0279253, -2.51138e-06, 0.00150295, 0.0216522, -0.0165372, -0.0277847, -0.385236, -0.000929291, -0.0147898, 2.44369, 0.187225)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../CharacterModel/YARROW_rigged")
@@ -131,10 +122,7 @@ anim_player = NodePath("../CharacterModel/YARROW_rigged/AnimationPlayer")
 parameters/walk/blend_position = 0.301764
 
 [node name="AshParticles" type="GPUParticles3D" parent="."]
-emitting = false
-amount = 64
-lifetime = 0.75
-fixed_fps = 60
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.295091, 0.302427, 0)
 process_material = SubResource("ParticleProcessMaterial_qhqgy")
 draw_pass_1 = SubResource("SphereMesh_tuyoq")
 script = ExtResource("3_qhqgy")
